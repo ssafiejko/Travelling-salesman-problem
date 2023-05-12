@@ -1,0 +1,97 @@
+import random
+import math
+
+# Funkcja zwracająca koszt dla danego rozwiązania
+def oblicz_koszt(rozwiazanie):
+    # Zwracamy sumę odległości między kolejnymi miastami w rozwiązaniu
+    koszt = 0
+    for i in range(len(rozwiazanie) - 1):
+        koszt += odleglosc[rozwiazanie[i]][rozwiazanie[i+1]]
+    # Dodajemy koszt drogi powrotnej do pierwszego miasta
+    koszt += odleglosc[rozwiazanie[-1]][rozwiazanie[0]]
+    return koszt
+
+# Funkcja zwracająca prawdopodobieństwo przejścia do gorszego rozwiązania
+def prawdopodobienstwo(C1, C2, T):
+    return math.exp(-(C2-C1)/T)
+
+# Parametry algorytmu
+T = 1000  # początkowa temperatura
+T_min = 1  # minimalna temperatura
+liczba_iteracji = 10000  # liczba iteracji
+alpha = 0.9  # współczynnik zmniejszania temperatury
+
+# Dane wejściowe
+miasta = ['A', 'B', 'C', 'D', 'E', 'F']
+odleglosc = [[0, 4, 3, 2, 5, 6],
+             [4, 0, 1, 5, 2, 3],
+             [3, 1, 0, 4, 3, 5],
+             [2, 5, 4, 0, 2, 3],
+             [5, 2, 3, 2, 0, 2],
+             [6, 3, 5, 3, 2, 0]]
+
+# Losujemy początkowe rozwiązanie
+S = random.sample(range(len(miasta)), len(miasta))
+
+# Pętla główna algorytmu
+for i in range(liczba_iteracji):
+    # Losujemy dwa miasta i zamieniamy je miejscami
+    S_p = S.copy()
+    a = random.randint(0, len(S_p)-1)
+    b = random.randint(0, len(S_p)-1)
+    S_p[a], S_p[b] = S_p[b], S_p[a]
+
+    # Obliczamy koszty dla obu rozwiązań
+    C1 = oblicz_koszt(S)
+    C2 = oblicz_koszt(S_p)
+
+    # Sprawdzamy czy akceptujemy nowe rozwiązanie
+    if C2 < C1:
+        S = S_p
+    else:
+        p = prawdopodobienstwo(C1, C2, T)
+        if random.random() < p:
+            S = S_p
+
+    # Zmniejszamy temperaturę
+    T *= alpha
+    if T < T_min:
+        break
+
+# Zwracamy najlepsze znalezione rozwiązanie
+najlepsze_rozwiazanie = [miasta[i] for i in S]
+
+print(najlepsze_rozwiazanie)
+
+
+
+def read_atsp_file(filename):
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+ 
+        # Extract the dimension of the problem
+        for line in lines:
+            if line.startswith('DIMENSION'):
+                n = int(line.strip().split()[1])
+                break
+ 
+        # Extract the matrix
+        matrix = []
+        start_reading = False
+        for line in lines:
+            if line.startswith('EDGE_WEIGHT_SECTION'):
+                start_reading = True
+                continue
+            if start_reading:
+                row = list(map(int, line.strip().split()))
+                matrix.append(row)
+                if len(matrix) == n:
+                    break
+ 
+    return matrix
+
+
+#cos= read_atsp_file('ftv64.atsp')
+
+import os
+print(os.getcwd())
