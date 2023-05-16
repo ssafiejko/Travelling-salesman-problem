@@ -58,9 +58,6 @@ def t_decrease_functions_dict():
     def linear_decrease(Top_T, T, iteration, cool_parameter):
         return T * cool_parameter
 
-    def logarithmic_cooling(T_init, T, iteration, cool_parameter=None):
-        return T_init / math.log(iteration + 2)
-
     def exponential_cooling(T_init, T, iteration, cool_parameter):  # około 0.05
         return T_init * math.exp(-cool_parameter * iteration)
 
@@ -69,7 +66,7 @@ def t_decrease_functions_dict():
     exp_parameters = [0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07]
 
     return {linear_decrease: linear_parameters,
-            logarithmic_cooling: [None],
+            
             exponential_cooling: exp_parameters}
 
 # Funkcja czytająca format .atsp
@@ -116,7 +113,7 @@ def simulated_annealing(T_init, T_function, cool_parameter,
 
     # Pętla główna algorytmu
     C1, C2 = 0, 0
-    T = T_init.copy()
+    T = T_init
 
     for i in range(liczba_iteracji):
 
