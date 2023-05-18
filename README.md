@@ -16,3 +16,7 @@ Następnie wykonujemy następujące kroki, aż osiągniemy wymaganą liczbę ite
 4. Zmniejszamy wartość parametru temperatury T.
 
 Po wykonaniu iteracji zwracamy najlepsze znalezione rozwiązanie.
+
+# Sciezka sciezeczka
+[3, 38, 2, 4, 35, 33, 30, 26, 23, 24, 36, 21, 22, 25, 31, 32, 34, 29, 28, 27, 20, 13, 12, 11, 15, 6, 7, 5, 8, 37, 9, 10, 16, 14, 17, 18, 19, 0, 1]
+1652
