@@ -111,7 +111,7 @@ def simulated_annealing(T_init, T_function, cool_parameter,
     odleglosc = read_atsp_file(file_name)
     miasta = [i for i in range(len(odleglosc))]
 
-    liczba_iteracji = 10  # liczba iteracji
+    liczba_iteracji = 1000000  # liczba iteracji
 
     # Losujemy początkowe rozwiązanie
     S = random.sample(range(len(miasta)), len(miasta))
@@ -210,8 +210,7 @@ def main():
 
 
 
-    cos= df[df['prob_function']=='metropolis_probability']
-    print(cos)
+
     slowniczek={}
 
     linear_parameters = [0.9999, 0.99999, 0.999999, 0.9999999]
