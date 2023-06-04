@@ -1,32 +1,32 @@
-# Travelling-salesman-problem
-
-Wybrany algorytm- symulowane wyżarzanie
-
-Opis algorytmu:
-
-Losujemy początkowe rozwiązanie, na przykład drogę, oznaczając ją jako S.
-Następnie wykonujemy następujące kroki, aż osiągniemy wymaganą liczbę iteracji lub zauważymy, że wynik nie poprawia się już przez dłuższy czas:
-
-1. Wybieramy dwa losowe miasta i zamieniamy je miejscami, aby otrzymać nowe rozwiązanie S'.
-
-2. Obliczamy koszt C(S') nowego rozwiązania.
-
-3. Jeśli C(S') jest mniejsze niż C(S), to przyjmujemy nowe rozwiązanie i ustawiamy S na S'. W przeciwnym przypadku, przyjmujemy nowe rozwiązanie z pewnym prawdopodobieństwem P(C(S), C(S'), T), gdzie T to parametr temperatury.
-
-4. Zmniejszamy wartość parametru temperatury T.
-
-Po wykonaniu iteracji zwracamy najlepsze znalezione rozwiązanie.
-
-# Sciezka sciezeczka ftv38
-[3, 38, 2, 4, 35, 33, 30, 26, 23, 24, 36, 21, 22, 25, 31, 32, 34, 29, 28, 27, 20, 13, 12, 11, 15, 6, 7, 5, 8, 37, 9, 10, 16, 14, 17, 18, 19, 0, 1]
-1652
-
-
-# Sciezka sciezeczka ft70
-[29, 23, 56, 54, 52, 51, 50, 17, 16, 15, 6, 38, 35, 42, 41, 40, 36, 39, 37, 69, 65, 68, 67, 63, 66, 64, 21, 27, 24, 28, 30, 34, 32, 12, 14, 10, 9, 11, 7, 13, 8, 20, 18, 19, 46, 45, 49, 47, 55, 53, 2, 4, 22, 25, 3, 5, 1, 0, 26, 33, 31, 62, 61, 60, 59, 58, 57, 44, 48, 43]
-40286
-
-# Sciezka rbg403
-[131, 130, 66, 269, 147, 366, 306, 242, 262, 224, 77, 88, 334, 122, 272, 344, 193, 348, 212, 367, 328, 358, 58, 97, 208, 266, 163, 183, 113, 368, 332, 53, 341, 149, 85, 91, 71, 346, 137, 21, 168, 32, 124, 
-55, 63, 398, 110, 285, 196, 292, 288, 268, 199, 261, 0, 233, 222, 86, 310, 382, 302, 127, 148, 372, 307, 390, 161, 24, 335, 352, 246, 11, 396, 65, 343, 74, 384, 392, 376, 289, 40, 134, 205, 362, 339, 29, 151, 329, 60, 14, 379, 119, 181, 207, 185, 120, 68, 78, 259, 225, 312, 175, 106, 95, 2, 273, 172, 173, 235, 117, 381, 43, 234, 64, 182, 126, 287, 18, 248, 349, 359, 264, 115, 178, 31, 282, 342, 209, 146, 156, 143, 94, 249, 23, 394, 371, 364, 41, 313, 36, 93, 247, 291, 378, 320, 16, 338, 81, 57, 123, 166, 9, 164, 1, 283, 258, 238, 221, 318, 304, 388, 290, 128, 211, 165, 135, 322, 192, 237, 319, 391, 252, 360, 125, 70, 333, 385, 69, 49, 239, 72, 99, 229, 136, 256, 355, 103, 80, 167, 356, 274, 253, 317, 204, 47, 96, 220, 201, 142, 255, 155, 383, 297, 174, 38, 397, 203, 218, 6, 354, 59, 210, 375, 13, 98, 401, 278, 325, 299, 215, 267, 92, 144, 159, 244, 198, 160, 111, 271, 154, 350, 284, 377, 50, 270, 12, 214, 217, 20, 337, 386, 157, 108, 109, 33, 105, 275, 380, 277, 361, 82, 369, 186, 389, 4, 25, 374, 56, 46, 351, 293, 227, 150, 303, 301, 340, 8, 61, 311, 232, 114, 133, 353, 177, 73, 300, 162, 190, 243, 400, 326, 226, 314, 279, 327, 286, 195, 363, 52, 223, 263, 79, 280, 104, 34, 197, 112, 202, 373, 170, 260, 228, 51, 324, 45, 365, 236, 121, 44, 189, 37, 141, 116, 179, 138, 22, 308, 102, 67, 305, 316, 39, 230, 27, 17, 100, 153, 26, 7, 35, 330, 158, 323, 296, 118, 101, 219, 281, 321, 188, 240, 140, 76, 42, 15, 345, 231, 357, 184, 295, 241, 145, 48, 90, 5, 331, 75, 107, 28, 54, 265, 402, 10, 276, 132, 294, 171, 191, 187, 84, 370, 395, 216, 89, 336, 87, 315, 3, 19, 251, 206, 399, 194, 129, 347, 309, 213, 250, 298, 30, 200, 393, 169, 180, 387, 62, 254, 83, 139, 245, 176, 257, 152]
-7019
+# Asymmetric Travelling Salesman Problem - Projekt optymalizacyjny
+Autorzy: [Natalia Safiejko](https://github.com/ssafiejko) | [Piotr Kosakowski](https://github.com/piotr-kosakowski) | [Krzysztof Sawicki](https://github.com/SawickiK) | [Kacper Wnęk](https://github.com/KacWNK) | [Wojciech Grabias](https://github.com/WojtekGrbs)
+# Opis problemu
+Problem asymetrycznego komiwojażera polega na znalezieniu najkrótszej trasy dla podróżującego handlowca, gdzie odległość między dwoma miastami może się różnić w zależności od kierunku podróży. Jest to rozszerzenie klasycznego problemu komiwojażera, które wprowadza dodatkowe wyzwania związane z nierównością kosztów podróży w poszczególnych kierunkach.
+# Podejście optymalizacyjne i jego implementacja
+#### Symulowane wyżarzanie
+Symulowane wyżarzanie to metaheurystyczna technika optymalizacji, inspirowana procesem wyżarzania metali, która pozwala na rozwiązywanie problemów optymalizacji globalnej. Algorytm wykorzystuje losowe ruchy w przestrzeni rozwiązań, akceptując czasami gorsze rozwiązania, aby uniknąć utknięcia w lokalnym minimum. Stopniowo zmniejsza się temperatura, co prowadzi do zmniejszenia prawdopodobieństwa akceptacji gorszych rozwiązań, umożliwiając znalezienie lepszego rozwiązania.
+#### Implementacja
+Zespół projektowy zaimplementował algorytm symulowanego wyżarzania, gdzie przy początkowej losowej ścieżce Hamiltona losowo zamieniane są miejscami wierzchołki w kontekście kolejności, dla nowo powstałego rozwiązania badany jest jego koszt i na podstawie przyjętej funkcji prawdopodobieństwa i aktualnie panującej temperatury w algorytmie nowe rozwiązanie przyjmowane jest bądź nie. Kod implementacji znajduje się w skrypcie ```Simulated_Annealing.py```, wymaga on jednak sprecyzowania parametrów algorytmu. Przykład działania algorytmu dla dowolnego problemu ze zbioru ```Data``` można zaobserwować wywołując skrypt ```Race_script.py``` przy wcześniejszym ustaleniu pliku do rozwiązania.
+# Dobór parametrów algorytmu
+#### Część techniczna
+1. Na podstawie odgórnie ustalonego zestawu funkcji chłodzenia oraz prawdopodobieństwa i pewnej puli parametrów badane były osiągi algorytmu dla każdej kominacji z powyższego zestawu. Wszystkie kombinacje parametrów generowane są przez ```Dictionaries_Generators.py``` i zawarte w nim dwie funkcje.
+2. Za pomocą skryptu ```1_Gridsearch.py``` uzyskiwane były kolejne wyniki parametrów dla ustalonego zestawu plików-problemów, które zapisywane były w rozszerzeniu ```.csv```
+3. Przy pomocy skryptu ```2_najlepszy_zestaw.py``` dla ustalonego problemu tworzony był ranking zestawów parametrów, które pozwoliły wyłonić globalnie najlepszy układ.
+#### Wizualizacje
+Wykorzystane w raporcie wizualizacje można jednocześnie zaobserwować, jak i zrekonstruować przy pomocy notatnika ```wykresy.ipynb```
+# Wyścig
+#### Program
+Skrypt wykorzystywany podczas wyścigu organizowanego na zajęciach laboratoryjnych to ```Race_script.py```. W ramach wyścigu grupa ustaliła dwa zestawy optymalnych parametrów, między którymi można przełączać się zmieniając parametr ```fast_mode``` funkcji ```simulated_annealing```.
+#### Wyniki wyścigu
+#### ftv38.atsp
+Wynik: 1652 <br />
+Optymalny wynik: 1530 <br />
+Miejsce: 2
+#### ft70.atsp
+Wynik: 40286 <br />
+Optymalny wynik: 38673 <br />
+Miejsce: 2
+#### rbg403.atsp
+Wynik: 7019 <br />
+Optymalny wynik: 2465 <br />
+Miejsce: 3
