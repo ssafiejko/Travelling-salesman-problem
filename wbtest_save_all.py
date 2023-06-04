@@ -4,6 +4,7 @@ import copy
 import time
 import pandas as pd
 
+
 # Funkcja zwracająca koszt dla danego rozwiązania
 def oblicz_koszt(rozwiazanie, odleglosc):
     # Zwracamy sumę odległości między kolejnymi miastami w rozwiązaniu
@@ -14,29 +15,30 @@ def oblicz_koszt(rozwiazanie, odleglosc):
     koszt += odleglosc[rozwiazanie[-1]][rozwiazanie[0]]
     return koszt
 
+
 # Funkcja generująca słownik funkcji określającej
 # Prawdopodobieństwo przyjęcia kandydata
 # Słownik ma postać {funkcja: lista_parametrów}
-def metropolis_probability(delta_e, temperature, prob_parameter=None):
-    return min(1, math.exp(-delta_e / temperature))
+
+
 
 def prob_functions_dict():
-
-
+    def metropolis_probability(delta_e, temperature, prob_parameter=None):
+        return min(1, math.exp(-delta_e / temperature))
 
     def boltzmann_probability(delta_e, temperature, prob_parameter=None):
         return math.exp(-delta_e / temperature)
 
-    def exponential_decrease_probability(delta_e, temperature, prob_parameter): #alpha
+    def exponential_decrease_probability(delta_e, temperature, prob_parameter):  # alpha
         return math.exp(-prob_parameter * delta_e / temperature)
 
     # def sigmoid_probability(delta_e, temperature, prob_parameter):
     #     return 1 / (1 + math.exp(-prob_parameter * delta_e / temperature)) #sigmoid
 
-    def gaussian_probability(delta_e, temperature, prob_parameter): # z sigmami chyba można mocno kombinować
+    def gaussian_probability(delta_e, temperature, prob_parameter):  # z sigmami chyba można mocno kombinować
         return math.exp(-(delta_e ** 2) / (2 * (prob_parameter ** 2) * temperature))
 
-    def power_law_probability(delta_e, temperature, prob_parameter): # decay_factor raczej jakiś taki okolo 2
+    def power_law_probability(delta_e, temperature, prob_parameter):  # decay_factor raczej jakiś taki okolo 2
         return 1 / ((delta_e + 1) ** prob_parameter * temperature)
 
     decay_factors = [0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4, 2.6, 2.8, 3, 3.2, 3.4, 3.6]
@@ -51,24 +53,23 @@ def prob_functions_dict():
             exponential_decrease_probability: alpha_factors,
             gaussian_probability: sigma_factors, power_law_probability: decay_factors}
 
+
 # Funkcja generująca słownik funkcji określającej
 # Zmianę temperatury wraz z działaniem algorytmu
 # Słownik ma postać {funkcja: lista_parametrów}
 def t_decrease_functions_dict():
+    def exponential_cooling(T_init, T, iteration, cool_parameter):  # około 0.05
+        return T_init * math.exp(-cool_parameter * iteration)
 
+    linear_parameters = [0.9999, 0.99999, 0.999999]
 
-
-    # def exponential_cooling(T_init, T, iteration, cool_parameter):  # około 0.05
-    #     return T_init * math.exp(-cool_parameter * iteration)
-
-    linear_parameters = [0.9999, 0.99999, 0.999999, 0.9999999]
-
-    #exp_parameters = [0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07]
+    exp_parameters = [0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07]
 
     return {
-        #exponential_cooling: exp_parameters,
+        # exponential_cooling: exp_parameters,
         linear_decrease: linear_parameters
-            }
+    }
+
 
 # Funkcja czytająca format .atsp
 # Zwraca macierz sąsiedztwa
@@ -100,9 +101,10 @@ def read_atsp_file(filename):
                 if len(matrix) == n:
                     break
         for i in range(len(matrix)):
-            matrix[i][i]= 1000000
+            matrix[i][i] = 1000000
 
     return matrix
+
 
 def simulated_annealing(T_init, T_function, cool_parameter,
                         Prob_function, prob_parameter,
@@ -111,7 +113,7 @@ def simulated_annealing(T_init, T_function, cool_parameter,
     odleglosc = read_atsp_file(file_name)
     miasta = [i for i in range(len(odleglosc))]
 
-    liczba_iteracji = 10  # liczba iteracji
+    liczba_iteracji = 1000000  # liczba iteracji
 
     # Losujemy początkowe rozwiązanie
     S = random.sample(range(len(miasta)), len(miasta))
@@ -122,7 +124,7 @@ def simulated_annealing(T_init, T_function, cool_parameter,
 
     global_min = float('inf')
     global_min_path = []
-
+    list_of_costs = []
     for i in range(liczba_iteracji):
 
         # Losujemy dwa miasta i zamieniamy je miejscami
@@ -139,14 +141,13 @@ def simulated_annealing(T_init, T_function, cool_parameter,
         if C2 < C1:
             S = S_p
         else:
-            delta_e = abs(C1-C2)
+            delta_e = abs(C1 - C2)
             p = Prob_function(delta_e, T, prob_parameter)
             if random.random() < p:
                 S = S_p
 
         if i % 10000 == 0:
             print(min(C1, C2))
-
 
             print(T)
 
@@ -157,75 +158,63 @@ def simulated_annealing(T_init, T_function, cool_parameter,
         if oblicz_koszt(S, odleglosc) < global_min:
             global_min_path = [miasta[i] for i in S]
             global_min = oblicz_koszt(S, odleglosc)
+        end = time.time()
+        if end - start > 300:
+            return global_min_path, global_min, end - start
 
     # Zwracamy najlepsze znalezione rozwiązanie
     najlepsze_rozwiazanie = [miasta[i] for i in S]
-    end = time.time()
 
     return global_min_path, global_min, end - start
     # Sciezka, koszt, czas
 
+
 def linear_decrease(Top_T, T, iteration, cool_parameter):
     return T * cool_parameter
 
-def main():
 
-    prob_dict = []
+def main():
+    prob_dict = prob_functions_dict()
     temp_dict = t_decrease_functions_dict()
 
-    starting_temperatures = [50000]  # Lista temperatur początkowych
+    starting_temperatures = [15000]  # Lista temperatur początkowych
 
-    file_names = ['data/ftv33.atsp']  # Lista nazw plików
+    file_names = ['data/br17.atsp', 'data/ft53.atsp','data/ft70.atsp','data/ftv33.atsp','data/ftv35.atsp','data/ftv38.atsp','data/ftv44.atsp','data/ftv47.atsp','data/ftv55.atsp','data/ftv64.atsp'
+                  'data/ftv70.atsp','data/ftv170.atsp','data/kro124p.atsp','data/p43.atsp','data/rbg323.atsp','data/rbg358.atsp','data/rbg403.atsp',
+                  'data/rbg443.atsp', 'data/ry48p.atsp']  # Lista nazw plików
 
-    min_temperature = 0.1 # Minimalna temperatura, określa potencjalny czas trwania algorytmu
+    min_temperature = 0.1  # Minimalna temperatura, określa potencjalny czas trwania algorytmu
 
     df = pd.DataFrame(columns=['file_name', 'prob_function', 'prob_parameter', 'temp_function',
                                'cool_parameter', 'T_init', 'function_result', 'time', 'path'])
 
-    # for file_name in file_names:
-    #     for prob_function in prob_dict:
-    #         for prob_parameter in prob_dict[prob_function]:
-    #             for temp_function in temp_dict:
-    #                 for cool_parameter in temp_dict[temp_function]:
-    #                     for T_init in starting_temperatures:
-    #
-    #                         # Append the row to the DataFrame
-    #
-    #                         path,function_result,time = simulated_annealing(T_init=T_init, T_function=temp_function, cool_parameter=cool_parameter,
-    #                                             Prob_function=prob_function, prob_parameter=prob_parameter,
-    #                                             break_point=min_temperature, file_name=file_name)
-    #                         row = {'file_name': file_name,
-    #                                'prob_function': prob_function.__name__,
-    #                                'prob_parameter': prob_parameter,
-    #                                'temp_function': temp_function.__name__,
-    #                                'cool_parameter': cool_parameter,
-    #                                'T_init': T_init,
-    #                                'function_result': function_result,
-    #                                'time': time,
-    #                                'path': path}
-    #                         df = df.append(row, ignore_index=True)
+    for file_name in file_names:
+        for prob_function in prob_dict:
+            for prob_parameter in prob_dict[prob_function]:
+                for temp_function in temp_dict:
+                    for cool_parameter in temp_dict[temp_function]:
+                        for T_init in starting_temperatures:
+
+                            # Append the row to the DataFrame
+
+                            path, function_result, time = simulated_annealing(T_init=T_init, T_function=temp_function, cool_parameter=cool_parameter,
+                                                Prob_function=prob_function, prob_parameter=prob_parameter,
+                                                break_point=min_temperature, file_name=file_name)
+                            row = {'file_name': file_name,
+                                   'prob_function': prob_function.__name__,
+                                   'prob_parameter': prob_parameter,
+                                   'temp_function': temp_function.__name__,
+                                   'cool_parameter': cool_parameter,
+                                   'T_init': T_init,
+                                   'function_result': function_result,
+                                   'time': time,
+                                   'path': path}
+                            df = df.append(row, ignore_index=True)
+                            print(file_name)
+
+    df.to_csv('WYNIKOSTATECZNY.csv', index=False)
 
 
 
-
-
-
-    cos= df[df['prob_function']=='metropolis_probability']
-    print(cos)
-    slowniczek={}
-
-    linear_parameters = [0.9999, 0.99999, 0.999999, 0.9999999]
-    slowniczek= {k: [] for k in linear_parameters}
-    for parametr in linear_parameters:
-        for _ in range(10):
-
-            path, function_result, time = simulated_annealing(T_init=30000, T_function=linear_decrease,
-                                                              cool_parameter=parametr,
-                                                              Prob_function=metropolis_probability, prob_parameter=None,
-                                                              break_point=min_temperature, file_name='data/ftv33.atsp')
-            slowniczek[parametr].append(function_result)
-
-
-    print(slowniczek)
 if __name__ == '__main__':
     main()
